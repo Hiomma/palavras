@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "683869832475",
+    "firebase_url": "https://palavras-94136.firebaseio.com",
+    "project_id": "palavras-94136",
+    "storage_bucket": "palavras-94136.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683869832475:android:850c8ba9ac7ee3f1c4ffbe",
+        "android_client_info": {
+          "package_name": "com.gabrielsereno.palavras"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683869832475-p8hbsvbjkrthfh92ndq2ugt1uin5kkif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBth4f2_OrhiuLnxKN4G5lpVabw7YG-GoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683869832475-p8hbsvbjkrthfh92ndq2ugt1uin5kkif.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
