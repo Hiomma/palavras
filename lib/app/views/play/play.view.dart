@@ -39,7 +39,7 @@ class _PlayState extends State<Play> {
                 child: Image.network(
                   snapshot.data,
                   width: double.infinity,
-                  height: 200,
+                  height: 300,
                 ),
               );
           }
@@ -87,24 +87,35 @@ class _PlayState extends State<Play> {
             return Builder(
               builder: (BuildContext context) {
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     getImage(palavra),
                     Container(
+                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      padding: EdgeInsets.all(4),
+                      alignment: Alignment.center,
+                      color: Colors.grey,
+                      width: double.infinity,
                       child: Observer(
                         builder: (_) => Text(
                           playController.display,
                           style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ),
                     ),
-                    Expanded(
+                    Container(
+                      height: 100,
                       child: Observer(
                         builder: (_) {
                           return GridView.count(
-                            mainAxisSpacing: 4,
-                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 20,
+                            crossAxisSpacing: 8,
                             crossAxisCount: 3,
+                            childAspectRatio: 3.5,
                             padding: EdgeInsets.all(4),
                             children: List.generate(
                               palavra.letras.length,
@@ -112,21 +123,28 @@ class _PlayState extends State<Play> {
                                 final button = palavra.letras[index];
                                 return Observer(
                                   builder: (_) {
-                                    return RaisedButton(
-                                      color: Colors.blue,
-                                      textColor: Colors.white,
-                                      child: Text(
-                                        button.toUpperCase(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                    return Container(
+                                      child: RaisedButton(
+                                        color: Colors.blue,
+                                        textColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                            side:
+                                                BorderSide(color: Colors.blue)),
+                                        child: Text(
+                                          button.toUpperCase(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          playController
+                                              .addDisplay(button.toUpperCase());
+                                          // await playAudio(button);
+                                        },
                                       ),
-                                      onPressed: () {
-                                        playController
-                                            .addDisplay(button.toUpperCase());
-                                        // await playAudio(button);
-                                      },
                                     );
                                   },
                                 );
