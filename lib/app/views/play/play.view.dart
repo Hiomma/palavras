@@ -20,7 +20,10 @@ class _PlayState extends State<Play> {
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
 
+  num index = 0;
+
   PlayerController playController = PlayerController();
+  CarouselController carouselController = CarouselController();
 
   FutureBuilder<String> getImage(PalavrasModel palavra) {
     return new FutureBuilder(
@@ -46,27 +49,45 @@ class _PlayState extends State<Play> {
         });
   }
 
+  void buttonPressed(String button) async {
+    playController.addDisplay(button.toUpperCase());
+
+    await audioCache.play("$button.mp3");
+    await advancedPlayer.onPlayerCompletion.first;
+
+    if (playController.display.length >=
+        widget.palavras[index].palavra.length) {
+      if (playController.display.toLowerCase() ==
+          widget.palavras[index].palavra) {
+        await audioCache.play("acertou.mp3");
+        await advancedPlayer.onPlayerCompletion.first;
+
+        playController.eraseDisplay();
+
+        index++;
+
+        carouselController.nextPage();
+
+        if (index <= widget.palavras.length - 1)
+          audioCache.play("${widget.palavras[index].palavra}.mp3");
+        else
+          Navigator.pop(context);
+      } else {
+        await audioCache.play("errou.mp3");
+        playController.eraseDisplay();
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     advancedPlayer = new AudioPlayer();
-    audioCache = new AudioCache(fixedPlayer: advancedPlayer);
+    audioCache =
+        new AudioCache(fixedPlayer: advancedPlayer, prefix: "palavras/");
 
-    // audioCache.play("papai.mp3");
-
-    // advancedPlayer.onPlayerCompletion.listen((event) {
-    //   if (playController.display.length >=
-    //       widget.palavras[index].palavra.length) {
-    //     if (playController.display == widget.palavras[index].palavra) {
-    //       // playAudio("acertou");
-    //       playController.eraseDisplay();
-    //     } else {
-    //       // playAudio("errou");
-    //       playController.eraseDisplay();
-    //     }
-    //   }
-    // });
+    audioCache.play("${widget.palavras[0].palavra}.mp3");
   }
 
   @override
@@ -76,12 +97,13 @@ class _PlayState extends State<Play> {
         title: Text("Letra " + widget.letra),
       ),
       body: CarouselSlider(
+        carouselController: carouselController,
         options: CarouselOptions(
-          height: double.infinity,
-          enableInfiniteScroll: false,
-          enlargeCenterPage: false,
-          viewportFraction: 1,
-        ),
+            height: double.infinity,
+            enableInfiniteScroll: false,
+            enlargeCenterPage: false,
+            viewportFraction: 1,
+            scrollPhysics: NeverScrollableScrollPhysics()),
         items: widget.palavras.map(
           (palavra) {
             return Builder(
@@ -140,9 +162,7 @@ class _PlayState extends State<Play> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         onPressed: () {
-                                          playController
-                                              .addDisplay(button.toUpperCase());
-                                          // await playAudio(button);
+                                          buttonPressed(button);
                                         },
                                       ),
                                     );

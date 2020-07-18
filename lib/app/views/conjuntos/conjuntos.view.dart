@@ -47,19 +47,29 @@ class _ConjuntosState extends State<Conjuntos> {
       ));
     }
 
+    conjuntosList.sort((a, b) => a.nome.compareTo(b.nome));
+    conjuntosList = conjuntosList.reversed.toList();
+
     for (final conjunto in conjuntosList) {
+      final auxList = letrasList
+          .where((element) => element.conjunto == conjunto.reference.documentID)
+          .toList();
+
+      auxList.sort((a, b) => a.nome.compareTo(b.nome));
+
       listWidget.add(
         Expanded(
           child: Observer(
             builder: (_) {
               return GridView.count(
                 crossAxisCount: 4,
+                mainAxisSpacing: 4,
                 crossAxisSpacing: 4,
                 padding: EdgeInsets.all(4),
                 children: List.generate(
-                  letrasList.length,
+                  auxList.length,
                   (index) {
-                    final LetrasModel letra = letrasList[index];
+                    final LetrasModel letra = auxList[index];
 
                     return Observer(
                       builder: (_) {
